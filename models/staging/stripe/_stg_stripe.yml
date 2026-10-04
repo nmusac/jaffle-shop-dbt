@@ -1,7 +1,9 @@
 models:
   - name: stg_stripe__payments
+    description: One payment attempt per row, with the amount converted to dollars.
     columns:
       - name: order_id
+        description: Foreign key to stg_jaffle_shop__orders.order_id.
         data_tests:
           - not_null
           - relationships:
@@ -9,6 +11,7 @@ models:
                 to: ref('stg_jaffle_shop__orders')
                 field: order_id
       - name: payment_method
+        description: Method used to pay.
         data_tests:
           - accepted_values:
               arguments:
@@ -18,6 +21,7 @@ models:
                   - bank_transfer
                   - gift_card
       - name: status
+        description: Result of the payment attempt. Only 'success' payments count as revenue.
         data_tests:
           - accepted_values:
               arguments:
@@ -25,5 +29,8 @@ models:
                   - success
                   - fail
       - name: amount
+        description: Payment amount in dollars (source amount / 100).
         data_tests:
           - not_null
+      - name: order_date
+        description: Date the payment was created (renamed from created).
