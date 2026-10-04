@@ -1,0 +1,38 @@
+sources:
+  - name: stripe
+    database: dbt-tutorial
+    schema: stripe
+    description: Payment data from Stripe, the payment processor.
+    tables:
+      - name: payment
+        description: Raw payments data. One row per payment attempt; an order can have several.
+        columns:
+          - name: id
+            description: Primary key for payments.
+            data_tests:
+              - unique
+              - not_null
+          - name: orderid
+            description: Foreign key to jaffle_shop.orders.id.
+            data_tests:
+              - not_null
+              - relationships:
+                  arguments:
+                    to: source('jaffle_shop', 'orders')
+                    field: id
+          - name: paymentmethod
+            description: Method used to pay (credit_card, coupon, bank_transfer, gift_card).
+          - name: status
+            description: Result of the payment attempt (success or fail).
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - success
+                      - fail
+          - name: amount
+            description: Payment amount in cents.
+          - name: created
+            description: Date the payment was created.
+          - name: _batched_at
+            description: Timestamp when the row was loaded into the warehouse.

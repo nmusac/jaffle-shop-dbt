@@ -1,0 +1,19 @@
+models:
+  - name: fct_orders
+    description: One order per row with the total amount paid through successful payments.
+    columns:
+      - name: order_id
+        description: Primary key for orders.
+        data_tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to dim_customers.customer_id.
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+      - name: amount
+        description: Total amount in dollars from successful payments for the order. Null if the order has no successful payments.
