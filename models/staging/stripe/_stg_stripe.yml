@@ -1,0 +1,29 @@
+models:
+  - name: stg_stripe__payments
+    columns:
+      - name: order_id
+        data_tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('stg_jaffle_shop__orders')
+                field: order_id
+      - name: payment_method
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - credit_card
+                  - coupon
+                  - bank_transfer
+                  - gift_card
+      - name: status
+        data_tests:
+          - accepted_values:
+              arguments:
+                values:
+                  - success
+                  - fail
+      - name: amount
+        data_tests:
+          - not_null
