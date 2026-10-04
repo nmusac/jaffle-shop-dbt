@@ -2,6 +2,7 @@ sources:
   - name: jaffle_shop
     database: dbt-tutorial
     schema: jaffle_shop
+    description: a clone of a postgres application database.
     config:
       freshness:
         warn_after:
