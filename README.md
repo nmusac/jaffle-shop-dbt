@@ -50,6 +50,7 @@ SQL at query time, so marts keep a fine grain and users can slice metrics by any
 | `return_rate` | fct_orders | (`returned` + `return_pending` orders) / all orders. |
 | `unique_customers` | fct_orders | Distinct customers with at least one order. |
 | `customer_count` | dim_customers | Distinct customers, including those with no orders. |
+| `total_lifetime_value` | dim_customers | Sum of lifetime value, USD (equals total revenue; used to split revenue by customer segment). |
 | `average_lifetime_value` | dim_customers | Average lifetime value per customer, USD. |
 | `repeat_customer_rate` | dim_customers | Customers with 2+ orders / customers with 1+ orders. |
 
@@ -67,9 +68,10 @@ buyers but generate ~70% of revenue.
 **Jaffle Shop – Sales & Customers** (Lightdash)
 
 - KPIs: Total revenue, Order count, Average order value, Unique customers, Return rate, Repeat customer rate
+- **Customers vs revenue by segment** — the key insight: 38% of customers never ordered, and the
+  29% who order repeatedly generate ~70% of revenue (activation + retention levers)
 - Revenue by month
 - Orders by status
-- Customers by segment
 - Top 10 customers by revenue (uses the `fct_orders` → `dim_customers` join)
 - Dashboard filters: order date, order status
 
