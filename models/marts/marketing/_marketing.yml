@@ -48,8 +48,8 @@ models:
                 description: "No orders (0), One-time (1) or Repeat (2+), based on number_of_orders."
                 sql: |
                   CASE
-                    WHEN ${number_of_orders} = 0 THEN 'No orders'
-                    WHEN ${number_of_orders} = 1 THEN 'One-time'
+                    WHEN ${TABLE}.number_of_orders = 0 THEN 'No orders'
+                    WHEN ${TABLE}.number_of_orders = 1 THEN 'One-time'
                     ELSE 'Repeat'
                   END
       - name: lifetime_value
