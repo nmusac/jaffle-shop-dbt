@@ -1,6 +1,31 @@
 models:
   - name: fct_orders
     description: One order per row with the total amount paid through successful payments.
+    config:
+      meta:
+        label: Orders
+        primary_key: order_id
+        joins:
+          - join: dim_customers
+            label: Customer
+            type: left
+            relationship: many-to-one
+            sql_on: ${fct_orders.customer_id} = ${dim_customers.customer_id}
+            fields: [first_name, last_name, customer_segment]
+        metrics:
+          completed_orders:
+            type: count_distinct
+            label: Completed orders
+            description: Number of distinct orders whose status is completed.
+            sql: "CASE WHEN ${TABLE}.order_status = 'completed' THEN ${TABLE}.order_id END"
+          return_rate:
+            type: number
+            label: Return rate
+            description: Share of orders that were returned or have a return pending (returned + return_pending) / all orders.
+            sql: >
+              COUNT(DISTINCT CASE WHEN ${TABLE}.order_status IN ('returned', 'return_pending') THEN ${TABLE}.order_id END)
+              / NULLIF(COUNT(DISTINCT ${TABLE}.order_id), 0)
+            format: '0.0%'
     columns:
       - name: order_id
         description: Primary key for orders.
@@ -22,6 +47,13 @@ models:
               arguments:
                 to: ref('dim_customers')
                 field: customer_id
+        config:
+          meta:
+            metrics:
+              unique_customers:
+                type: count_distinct
+                label: Unique customers
+                description: Number of distinct customers who placed at least one order.
       - name: order_date
         description: Date the order was placed.
       - name: order_status
