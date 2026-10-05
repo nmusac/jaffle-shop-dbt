@@ -73,7 +73,7 @@ buyers but generate ~70% of revenue.
 - Top 10 customers by revenue (uses the `fct_orders` → `dim_customers` join)
 - Dashboard filters: order date, order status
 
-<!-- Screenshot: docs/dashboard.png -->
+![Jaffle Shop – Sales & Customers dashboard in Lightdash](docs/dashboard.png)
 
 ## Testing
 
