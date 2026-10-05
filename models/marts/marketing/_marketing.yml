@@ -7,6 +7,13 @@ models:
         data_tests:
           - unique
           - not_null
+        config:
+          meta:
+            metrics:
+              customer_count:
+                type: count_distinct
+                label: Customer count
+                description: Number of distinct customers.
       - name: first_name
         description: Customer's first name.
       - name: last_name
@@ -21,3 +28,12 @@ models:
           - not_null
       - name: lifetime_value
         description: Total amount in dollars the customer has paid through successful payments.
+        config:
+          meta:
+            metrics:
+              average_lifetime_value:
+                type: average
+                label: Average lifetime value
+                description: Average amount paid per customer in dollars.
+                format: usd
+                round: 2
