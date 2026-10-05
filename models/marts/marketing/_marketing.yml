@@ -1,6 +1,19 @@
 models:
   - name: dim_customers
     description: One customer per row with their order history and lifetime value.
+    config:
+      meta:
+        label: Customers
+        primary_key: customer_id
+        metrics:
+          repeat_customer_rate:
+            type: number
+            label: Repeat customer rate
+            description: Share of customers with orders who placed more than one order (repeat customers / customers with at least one order).
+            sql: >
+              COUNT(DISTINCT CASE WHEN ${TABLE}.number_of_orders > 1 THEN ${TABLE}.customer_id END)
+              / NULLIF(COUNT(DISTINCT CASE WHEN ${TABLE}.number_of_orders > 0 THEN ${TABLE}.customer_id END), 0)
+            format: '0.0%'
     columns:
       - name: customer_id
         description: Primary key for customers.
@@ -26,6 +39,19 @@ models:
         description: Total number of orders placed by the customer.
         data_tests:
           - not_null
+        config:
+          meta:
+            additional_dimensions:
+              customer_segment:
+                type: string
+                label: Customer segment
+                description: "No orders (0), One-time (1) or Repeat (2+), based on number_of_orders."
+                sql: |
+                  CASE
+                    WHEN ${number_of_orders} = 0 THEN 'No orders'
+                    WHEN ${number_of_orders} = 1 THEN 'One-time'
+                    ELSE 'Repeat'
+                  END
       - name: lifetime_value
         description: Total amount in dollars the customer has paid through successful payments.
         config:
