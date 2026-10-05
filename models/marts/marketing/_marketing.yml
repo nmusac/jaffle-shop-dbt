@@ -57,6 +57,12 @@ models:
         config:
           meta:
             metrics:
+              total_lifetime_value:
+                type: sum
+                label: Total lifetime value
+                description: Sum of lifetime value across customers in dollars (equals total revenue).
+                format: usd
+                round: 2
               average_lifetime_value:
                 type: average
                 label: Average lifetime value

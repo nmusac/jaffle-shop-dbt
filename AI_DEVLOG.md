@@ -80,9 +80,19 @@ to `main` without a passing `dbt build` and a pull request that I review and mer
 - **Verified:** totals cross-checked with `dbt show` against expected values (revenue 1672, 99
   orders, AOV 16.89).
 
+- **AI got one wrong:** the first version of `customer_segment` referenced `${number_of_orders}`,
+  which Lightdash could not resolve inside an additional dimension (a compile warning on *Refresh
+  dbt*). `dbt build` passed because dbt does not validate Lightdash `meta`. Fixed by referencing the
+  raw column, `${TABLE}.number_of_orders`, in a follow-up PR. **Learned:** semantic-layer changes
+  need to be checked in Lightdash itself, not only with dbt.
+
 ### 10. Dashboard
 - **Me:** built the dashboard myself in the Lightdash UI, following a chart-by-chart plan, to
-  practise the tool hands-on.
+  practise the tool hands-on: KPI big numbers, a combo chart (revenue bars + % of total line on a
+  secondary axis, via a table calculation), orders by status, top 10 customers (using the join) and
+  customers by segment, plus order date and order status dashboard filters.
+- **AI:** gave the reference values beforehand and reviewed my screenshots; every number on the
+  dashboard matched the values computed independently with `dbt show`.
 
 ---
 
