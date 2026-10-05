@@ -19,7 +19,7 @@ orders as (
 
     final as (
 
-select customer_id,a.order_id , amount
+select customer_id,a.order_id , a.order_date, a.order_status, amount
 
 from orders a
 

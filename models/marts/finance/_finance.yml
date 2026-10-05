@@ -7,6 +7,13 @@ models:
         data_tests:
           - unique
           - not_null
+        config:
+          meta:
+            metrics:
+              order_count:
+                type: count_distinct
+                label: Order count
+                description: Number of distinct orders.
       - name: customer_id
         description: Foreign key to dim_customers.customer_id.
         data_tests:
@@ -15,5 +22,24 @@ models:
               arguments:
                 to: ref('dim_customers')
                 field: customer_id
+      - name: order_date
+        description: Date the order was placed.
+      - name: order_status
+        description: "{{ doc('order_status') }}"
       - name: amount
         description: Total amount in dollars from successful payments for the order. Null if the order has no successful payments.
+        config:
+          meta:
+            metrics:
+              total_revenue:
+                type: sum
+                label: Total revenue
+                description: Sum of successful payments in dollars.
+                format: usd
+                round: 2
+              average_order_value:
+                type: average
+                label: Average order value
+                description: Average amount paid per order in dollars.
+                format: usd
+                round: 2
